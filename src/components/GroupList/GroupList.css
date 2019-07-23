@@ -1,0 +1,13 @@
+.group-list {
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll ;
+    margin: 0 8px;
+    box-sizing: border-box;
+
+}
+
+
+
+
+

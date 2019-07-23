@@ -1,0 +1,14 @@
+.todo-item{
+    display: block;
+    width: 100%;
+    position: relative;
+}
+.menu{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    visibility: hidden;
+    
+}

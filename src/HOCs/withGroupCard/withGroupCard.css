@@ -1,0 +1,12 @@
+.group-card {
+    min-width: 270px;
+    max-width: 270px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    margin-left: 8px;
+    height: 100%;
+}
+
+.group-card:first-child {
+    margin-left: 0;
+}
