@@ -15,7 +15,7 @@ function App() {
       <LocalStorageDataProvider>
           <Header title="Todos With Hooks"/>
           <GroupList />
-          <Footer />
+          {/* <Footer /> */}
       </LocalStorageDataProvider>
     </div>
   );

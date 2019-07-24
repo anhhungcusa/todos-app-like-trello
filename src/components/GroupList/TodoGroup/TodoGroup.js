@@ -10,7 +10,7 @@ export const TodoGroup = ({groupID, isValid, todos = []}) => {
         <div className="todo-group">
             {todos.map((task,index) => (
                 <div key={task.id} className=" d-flex-jty-center">
-                    <TodowithCard   groupID={groupID} {...task} />
+                    <TodowithCard   groupID={groupID} todo={task} />
                 </div>
             ))}
         </div>
