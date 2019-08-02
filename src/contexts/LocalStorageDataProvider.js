@@ -9,14 +9,14 @@ const createTodo = (title) => ({
     description: 'bla bla bla...',
     isCompleted: false
 })
-const createTodoGroup = (day) => ({
+const createTodoGroup = () => ({
     isValid: true,
     todos: [
         {
             id: uuid(),
             title: 'Do something',
             description: 'bla bla bla...',
-            isCompleted: true
+            isCompleted: false
         }
     ]
 })
@@ -99,6 +99,54 @@ export const LocalStorageDataProvider = ({ children }) => {
             todosGroup: { ...clonedtodosGroup }
         })
     }
+    //-----Edit todo
+    const [editModalValue, setEditModalValue] = useState(null);
+    const toggleEditMode = (groupID, todo, coordinate) => {
+        if(groupID === null)
+            setEditModalValue(null);
+        else 
+            setEditModalValue({groupID, todo, coordinate})
+    }
+    const editTodo = useCallback( 
+        (groupID, editedTodo) => {
+            const index = data.todosGroup[groupID].todos.findIndex(todo => todo.id === editedTodo.id);
+            setData({
+                title: data.title,
+                todosGroup: {
+                    ...data.todosGroup,
+                    [groupID]: {
+                        isValid: data.todosGroup[groupID].isValid,
+                        todos: [
+                            ...data.todosGroup[groupID].todos.slice(0, index),
+                            editedTodo,
+                            ...data.todosGroup[groupID].todos.slice(index + 1)
+                        ]
+                    }
+                }
+            })
+        }, [data]
+    )
+    //----------Change todo status
+    const changeTodoStatus = useCallback(
+        (groupID, selectedTodo) => {
+            const index = data.todosGroup[groupID].todos.findIndex(todo => todo.id === selectedTodo.id);
+            setData({
+                title: data.title,
+                todosGroup: {
+                    ...data.todosGroup,
+                    [groupID]: {
+                        isValid: data.todosGroup[groupID].isValid,
+                        todos: [
+                            ...data.todosGroup[groupID].todos.slice(0, index),
+                            {...selectedTodo,
+                                isCompleted: !selectedTodo.isCompleted},
+                            ...data.todosGroup[groupID].todos.slice(index + 1)
+                        ]
+                    }
+                }
+            })
+        }, [data]
+    )
     //-----Add todo
     const [addModelGroupID, setAddModelGroupID] = useState(null);
     const checkAddModelGroupID = (groupID) => {
@@ -143,27 +191,6 @@ export const LocalStorageDataProvider = ({ children }) => {
             })
         }, [data]
     )
-    //----------Change todo status
-    const changeTodoStatus = useCallback(
-        (groupID, selectedTodo) => {
-            const index = data.todosGroup[groupID].todos.findIndex(todo => todo.id === selectedTodo.id);
-            setData({
-                title: data.title,
-                todosGroup: {
-                    ...data.todosGroup,
-                    [groupID]: {
-                        isValid: data.todosGroup[groupID].isValid,
-                        todos: [
-                            ...data.todosGroup[groupID].todos.slice(0, index),
-                            {...selectedTodo,
-                                isCompleted: !selectedTodo.isCompleted},
-                            ...data.todosGroup[groupID].todos.slice(index + 1)
-                        ]
-                    }
-                }
-            })
-        }, [data]
-    )
 
     const changeInputTodo = useCallback((inputTodo) => {
         setInputTodo(inputTodo)
@@ -175,14 +202,21 @@ export const LocalStorageDataProvider = ({ children }) => {
         <localStorageDataContext.Provider
             value={{
                 data: { ...data, inputTodo }, feature: {
+                    // handle todo group 
                     addTodoGroupForToday,
                     removeTodoGroup,
+                    //edit todo
+                    editModalValue,
+                    toggleEditMode,
+                    editTodo,
+                    changeTodoStatus,
+                    //add todo
                     addModelGroupID,
                     checkAddModelGroupID,
                     addTodo,
-                    removeTodo,
-                    changeTodoStatus,
-                    changeInputTodo
+                    changeInputTodo,
+                    //remove todo
+                    removeTodo
                 }
             }}
         >

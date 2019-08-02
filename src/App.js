@@ -6,6 +6,7 @@ import { Header } from './components/Header/Header';
 import { LocalStorageDataProvider} from './contexts/LocalStorageDataProvider';
 import { Footer } from './components/Footer/Footer';
 import { GroupList } from './components/GroupList/GroupList';
+import { EditModal } from './components/EditModal/EditModal';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       <LocalStorageDataProvider>
           <Header title="Todos With Hooks"/>
           <GroupList />
+          <EditModal />
           {/* <Footer /> */}
       </LocalStorageDataProvider>
     </div>

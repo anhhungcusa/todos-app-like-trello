@@ -1,0 +1,23 @@
+.quick-card-editor {
+    background: rgba(0,0,0,.6);
+    bottom: 0;
+    color: #fff;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10;
+}
+
+.quick-editor-card {
+    display: block;
+    min-height: 50px;
+    min-width: 250px;
+    max-width: 250px;
+    position: absolute;
+}
+.close-editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

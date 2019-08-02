@@ -4,28 +4,18 @@ import classnames from 'classnames';
 import './TodoItem.css';
 import { localStorageDataContext } from './../../../../contexts/LocalStorageDataProvider';
 
-const calculatePosition = (currentRef) => {
-    let top = 0, left = 0;
-    (function recursion(value) {
-        if (value.offsetParent !== null) {
-            top += value.offsetTop;
-            left += value.offsetLeft;
-            recursion(value.offsetParent);
-        }
-    })(currentRef)
-    return [top, left];
-}
+import {  } from './../../../../utilities'
 
 export const TodoItem = ({todo, groupID}) => {
     const {id, title, isCompleted} = todo;
-    const { feature: { removeTodo, changeTodoStatus } } = useContext(localStorageDataContext);
-    const divRef = useRef(null)
+    const { feature: { removeTodo, changeTodoStatus, toggleEditMode  } } = useContext(localStorageDataContext);
+    const todoItemRef = useRef(null)
     const editBtn = (e) => {
-        let [top, left] = calculatePosition(divRef.current);
-        console.log(top , left, divRef)
+        const { top, left } = todoItemRef.current.getBoundingClientRect();
+        toggleEditMode(groupID, todo, { top , left})
     }
     return (
-        <div ref={divRef} className="todo-item">
+        <div ref={todoItemRef} className="todo-item">
             <div 
             className={classnames("w-100-h-100", {"completed": isCompleted})}
             onClick={() => changeTodoStatus(groupID,todo)}>

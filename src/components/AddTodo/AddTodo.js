@@ -9,10 +9,11 @@ export const AddTodo = ({groupID}) => {
     useEffect(() => {
         const changeInputTime = setTimeout(() => {
             changeInputTodo(value);
-        }, 300);
+        }, 200);
         return () => clearTimeout(changeInputTime)
     }, [value])
     useEffect(() => setValue(inputTodo), [inputTodo])
+
     const textareaRef = useRef(null);
     useEffect(() => {
         textareaRef.current.focus();
@@ -21,7 +22,7 @@ export const AddTodo = ({groupID}) => {
     const handleValueChange = (e) => setValue(e.target.value);
     const handleKeyUp = (e) => {
         if(e.keyCode === 13) {
-            addTodo(groupID,value);
+            addTodo(groupID,value.replace( /\r?\n/gi, ' ' ));
             setValue('');
         }
     }
@@ -29,11 +30,9 @@ export const AddTodo = ({groupID}) => {
     return (
         <div className="add-todo d-flex-jty-center">
                 <textarea 
-
                     value={value}
                     onChange={handleValueChange}
                     onKeyUp={handleKeyUp}
-                    // onMouseLeave={() => addTodo(groupID,value)}
                     ref={textareaRef}
                     placeholder="Enter task"
                 />
