@@ -1,22 +1,22 @@
 import React, { useContext, useEffect, useState, useRef} from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import { localStorageDataContext } from './../../contexts/LocalStorageDataProvider'
 import { withGroupCard } from './../../HOCs/withGroupCard/withGroupCard'
 import { TodoGroup } from './TodoGroup/TodoGroup'
 
 import './GroupList.css';
+import { AddTodoGroup } from '../AddTodoGroup/AddTodoGroup';
 
-const TodoGroupwithGroupCard = withGroupCard(TodoGroup, '#dfe1e6') 
+const TodoGroupwithGroupCard = withGroupCard(TodoGroup, 'red') 
 
 export const GroupList = (props) => {
-    const { data:{todosGroup}, feature: { addTodo, addTodoGroupForToday  } } = useContext(localStorageDataContext); 
+    const { data:{ todosGroup }, feature: { addTodoGroupForToday, moveTodo, moveTodoToAnotherList } } = useContext(localStorageDataContext); 
     const [todosGroupKey, settodosGroupKey] = useState([]);
     useEffect(() => {
         settodosGroupKey(Object.keys(todosGroup).sort());
-    }, [todosGroup])
-    // useEffect(() => {
-    //     console.log(todosGroupKey,12);
-    // })
+    }, [todosGroup]);
+
     const inputDateRef = useRef(null);
     const addTodoGroupForOptionDate = (e) => {
         const { current: {value} } = inputDateRef
@@ -28,23 +28,44 @@ export const GroupList = (props) => {
                 y: date.getFullYear()
             })
         }
+    };
+    const onDragEnd = ({destination, source, draggableId }) => {
+        if(!destination)
+            return;
+        if(
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        )
+            return;
+
+        if(destination.droppableId === source.droppableId) {
+            moveTodo(source.droppableId, source.index, destination.index);
+            return;
+        }
+        // debugger;
+        // moving from one list to another
+        moveTodoToAnotherList(source.droppableId, destination.droppableId, source.index, destination.index);
+
     }
 
     return (
         <main>
             <div className="group-list">
+            <DragDropContext onDragEnd={onDragEnd}>
                 {todosGroupKey.map(key => {
                     return(
-                    <div  key={key}>
-                        <TodoGroupwithGroupCard groupID={key} addTodo={addTodo}  {...todosGroup[key]} />
-                    </div>)
+                        <TodoGroup key={`.123${key}`} groupID={key}  {...todosGroup[key]} />
+                    )
                 })}
+            </DragDropContext>
                 <div>
                     <div className="group-card">
-                        <button onClick={(e) => addTodoGroupForToday(e)}>Add todo list for today</button>
-                        <input ref={inputDateRef} type="date" />
-                        <button onClick={addTodoGroupForOptionDate}>Add todo list</button>
+                        <AddTodoGroup addTodoGroupForToday={addTodoGroupForToday}
+                            addTodoGroupForOptionDate={addTodoGroupForOptionDate}
+                            inputDateRef={inputDateRef} />
                     </div>
+                    {/* <button onClick={() => moveTodo('1564941600000', 0, 2)}>move</button>
+                    <button onClick={() => moveTodoToAnotherList('1564941600000','1565028000000', 0, 3)}>move to another list</button> */}
                 </div>
             </div>
         </main>

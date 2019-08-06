@@ -1,23 +1,23 @@
-import React, { useState, useEffect, useContext } from 'react';
-import uuid from 'uuid';
+import React, { useEffect } from 'react';
 
 import './App.css';
 import { Header } from './components/Header/Header';
 import { LocalStorageDataProvider} from './contexts/LocalStorageDataProvider';
-import { Footer } from './components/Footer/Footer';
 import { GroupList } from './components/GroupList/GroupList';
-import { EditModal } from './components/EditModal/EditModal';
+import { Modal } from './components/Modal/Modal';
 
 function App() {
 
+  useEffect(() => {
+    document.title = 'Todo App';
+  })
 
   return (
     <div className="App">
       <LocalStorageDataProvider>
           <Header title="Todos With Hooks"/>
           <GroupList />
-          <EditModal />
-          {/* <Footer /> */}
+          <Modal />
       </LocalStorageDataProvider>
     </div>
   );

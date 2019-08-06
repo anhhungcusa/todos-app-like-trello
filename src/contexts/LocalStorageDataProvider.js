@@ -1,48 +1,12 @@
 import React, { useState, useEffect, useContext, useCallback } from 'react';
-import uuid from 'uuid';
 
-const createDefaultDay = () => (new Date().setHours(1, 0, 0, 0));
-const createOptionDay = (d, m, y) => (new Date(y, m, d).setHours(1, 0, 0, 0));
-const createTodo = (title) => ({
-    id: uuid(),
-    title,
-    description: 'bla bla bla...',
-    isCompleted: false
-})
-const createTodoGroup = () => ({
-    isValid: true,
-    todos: [
-        {
-            id: uuid(),
-            title: 'Do something',
-            description: 'bla bla bla...',
-            isCompleted: false
-        }
-    ]
-})
+import { mockupData } from './../constant/mockData';
+import { createDefaultDay, createOptionDay, createTodo, createTodoGroup } from './../utilities'
+
 const localStorageKey = 'TodoApp';
 const sesionStorageKey = 'inputTodo';
 
-const mockupData = {
-    title: 'Todos With Hooks',
-    todosGroup: {
-        '1563559200000': {
-            isValid: true,
-            todos: [
-                {
-                    id: uuid(),
-                    title: 'Do something',
-                    description: 'bla bla bla...',
-                    isCompleted: true
-                }
-            ]
-        }
-    }
-}
-
-
 export const localStorageDataContext = React.createContext(mockupData);
-
 export const LocalStorageDataProvider = ({ children }) => {
     const [data, setData] = useState(useContext(localStorageDataContext));
     // setup default localStorage
@@ -166,8 +130,6 @@ export const LocalStorageDataProvider = ({ children }) => {
                     }
                 });
                 setInputTodo('');
-            } else {
-                console.log(inputTodo)
             }
         }, [data, inputTodo]
     )
@@ -191,12 +153,53 @@ export const LocalStorageDataProvider = ({ children }) => {
             })
         }, [data]
     )
+    // Dnd : move todo
+    const moveTodo = (groupID, origin, destination) => {
+        const newTodos = Array.from(data.todosGroup[groupID].todos);
+        newTodos.splice(origin, 1)
+        // debugger
+        newTodos.splice(destination, 0, {...data.todosGroup[groupID].todos[origin]})
+        // debugger
+        setData({
+            title: data.title,
+            todosGroup: {
+                ...data.todosGroup,
+                [groupID]: {
+                    isValid: data.todosGroup[groupID].isValid,
+                    todos: [...newTodos]
+                }
+            }
+        })
+    }
+    
+    const moveTodoToAnotherList = (originGroupID, destinationGroupID, origin, destination) => {
+        //delete todo of origin
+        // debugger;
+        const newTodosOfOrigin = Array.from(data.todosGroup[originGroupID].todos);
+        newTodosOfOrigin.splice(origin, 1);
+        //insert todo into destination
+        const newTodosOfDestination = Array.from(data.todosGroup[destinationGroupID].todos);
+        newTodosOfDestination.splice(destination, 0, data.todosGroup[originGroupID].todos[origin]);
+        setData({
+            title: data.title,
+            todosGroup: {
+                ...data.todosGroup,
+                [originGroupID]: {
+                    isValid: data.todosGroup[originGroupID].isValid,
+                    todos: [...newTodosOfOrigin]
+                },
+                [destinationGroupID]: {
+                    isValid: data.todosGroup[destinationGroupID].isValid,
+                    todos: [...newTodosOfDestination]
+                }
+            }
+        })
 
-    const changeInputTodo = useCallback((inputTodo) => {
+    }
+
+    const changeInputTodo = (inputTodo) => {
         setInputTodo(inputTodo)
-    }, [inputTodo])
-
-    // useEffect(() => console.log(data), [data])
+    }
 
     return (
         <localStorageDataContext.Provider
@@ -216,11 +219,13 @@ export const LocalStorageDataProvider = ({ children }) => {
                     addTodo,
                     changeInputTodo,
                     //remove todo
-                    removeTodo
+                    removeTodo,
+                    //Dnd
+                    moveTodo,
+                    moveTodoToAnotherList
                 }
             }}
         >
-            {/* <button onClick={() => setData({...data, title: 'kakak'})}>change </button> */}
             {children}
         </localStorageDataContext.Provider>
     )
