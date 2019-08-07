@@ -18,21 +18,19 @@ export const findWindowRelativeCoordinate = () => {
 
 }
 //Date
-const dayList = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy' ]
 export const getDDM = (time) => {
+    const dayList = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy' ]
     const thisYear = (new Date()).getFullYear();
     const date = new Date(time - 0);
     let timeYear = date.getFullYear();
     if( timeYear >  thisYear){ 
-        timeYear = `, Năm ${timeYear}`;}
-    else {
-        timeYear = '';
+        timeYear = `, Năm ${timeYear}`;
+        return `Ngày ${date.getDate()}, Tháng ${date.getMonth() + 1}${timeYear}`
     }
-    return `${dayList[date.getDay()]}, Ngày ${date.getDate()}, Tháng ${date.getMonth() + 1}${timeYear}`;
+    return `${dayList[date.getDay()]}, Ngày ${date.getDate()}, Tháng ${date.getMonth() + 1}`;
 }
 
 //create  default obj
-
 export const createDefaultDay = () => (new Date().setHours(1, 0, 0, 0));
 export const createOptionDay = (d, m, y) => (new Date(y, m, d).setHours(1, 0, 0, 0));
 export const createTodo = (title) => ({

@@ -1,5 +1,5 @@
 export const mockupData = {
-    title: 'Todos With Hooks',
+    title: 'Todos App',
     todosGroup: {
         '1563559200000': {
             isValid: true,

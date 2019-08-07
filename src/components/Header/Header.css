@@ -4,5 +4,9 @@
 header {
     text-align: center;
     color: #4e342e;
-    height: 10%;
+    height: 5%;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%)
 }

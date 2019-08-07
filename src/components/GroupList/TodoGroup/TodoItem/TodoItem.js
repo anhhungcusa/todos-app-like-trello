@@ -1,5 +1,5 @@
 import React, { useContext, useRef } from 'react';
-import uuid from 'uuid';
+
 import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components'
 import classnames from 'classnames';
@@ -49,13 +49,25 @@ export const TodoItem = ({ todo, groupID, index }) => {
         const { top, left } = todoItemRef.current.getBoundingClientRect();
         toggleEditMode(groupID, todo, { top, left })
     }
-    // const isDragDisabled = id === '239e4db6-76d1-4578-af22-4d2e8a75e6e2';
+    const handleOnDrag = () => {
+        todoItemRef.current.style.transform = 'rotate(20deg)';
+        todoItemRef.current.style.color = 'red';
+        console.log('handleOnDrag')
+    }
+    const handleOnDragStart = () => {
+        console.log('start')
+    }
+    
+    const handleOnDragEnd = () => {
+        todoItemRef.current.style.transform = 'rotate(0deg)';
+        console.log('handleOnDragend')
+    }
+
     return (
         <Draggable
             draggableId={id}
             index={index}
-        // isDragDisabled={isDragDisabled}
-        // ref={todoItemRef}
+            
         >
             {(provided, snapshot) => (
                 <div ref={todoItemRef}> 
@@ -64,7 +76,6 @@ export const TodoItem = ({ todo, groupID, index }) => {
                         {...provided.dragHandleProps}
                         ref={provided.innerRef}
                         isDragging={snapshot.isDragging}
-                    // isDragDisabled={isDragDisabled}
                     >
                         <div
                             className={classnames("w-100-h-100", { "completed": isCompleted })}

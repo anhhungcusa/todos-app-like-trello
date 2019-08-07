@@ -1,12 +1,14 @@
 main {
     height: 90%;
     position: relative;
+    top: 5%;
+    /* overflow-x: scroll; */
 }
 .group-list {
     display: flex;
     flex-direction: row;
-    overflow-x: scroll ;
-    margin: 0 8px;
+    /* overflow-x: scroll ; */
+    /* padding: 0 8px; */
     box-sizing: border-box;
     height: 100%;
     position: absolute;

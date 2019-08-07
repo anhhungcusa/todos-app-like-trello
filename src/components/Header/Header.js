@@ -5,9 +5,12 @@ import { localStorageDataContext} from './../../contexts/LocalStorageDataProvide
 
 export const Header = () => {
     const { data: {title} } = useContext(localStorageDataContext) 
+    const handleOnDragStart = () => {
+        console.log('start')
+    }
     return (
-        <header  >
-            <p draggable={true} className="title">
+        <header onDragStart={handleOnDragStart} >
+            <p draggable={true}  className="title">
                 {title}
             </p>
         </header>

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
@@ -13,30 +13,31 @@ const Container = styled.div`
     margin: 8px;
     border: 1px solid lightgrey;
     border-radius: 2px;
-    width: 220px;
-
+    width: 240px;
     display: flex;   
     flex-direction: column;
+
 `
-const TaskList = styled.div`
-padding: 8px;
-transition: background-color 0.2s ease;
-background-color: ${props =>
-        props.isDraggingOver ? 'red' : 'blue'}
-flex-grow: 1;
-min-height: 100px;
+const TodoList = styled.div`
+    padding: 8px;
+    transition: background-color 0.2s ease;
+    background-color: ${props =>
+            props.isDraggingOver ? 'red' : 'blue'}
+    flex-grow: 1;
+    max-height: 540px;
+    overflow-y: auto;
 `
-const Title = styled.h3`
+const Title = styled.h6`
     padding: 8px;
 `
 
-const TodowithCard = withCard(TodoItem, '#fff')
+// const TodowithCard = withCard(TodoItem, '#fff')
 export const TodoGroup = ({ groupID, isValid, todos = [] }) => {
     const { feature: { addModelGroupID, checkAddModelGroupID, removeTodoGroup } } = useContext(localStorageDataContext);
     const [isAddModel, setIsAddModel] = useState(false);
     useEffect(() => {
         if (addModelGroupID !== groupID)
-            setIsAddModel(false);
+        setIsAddModel(false);
     }, [addModelGroupID]);
     const closeAddmodel = () => {
         setIsAddModel(false);
@@ -57,23 +58,25 @@ export const TodoGroup = ({ groupID, isValid, todos = [] }) => {
     return (
         <Container>
             <Title>{getDDM(groupID)}</Title>
-            <Droppable  droppableId={groupID} type="TASK" >
+            <Droppable style={{background: 'red'}}  droppableId={groupID} type="TASK" >
                 {(provided, snapshot) => (
-                    <TaskList
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                        isDraggingOver={snapshot.isDraggingOver}
-                    >
-                        {todos.map((task, index) => (
-                                <TodoItem key={task.id} groupID={groupID} todo={task} index={index} />
-                        ))}
-                        {provided.placeholder}
-                    </TaskList>
+                        <TodoList
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                            isDraggingOver={snapshot.isDraggingOver}
+                        >
+                            {todos.map((task, index) => (
+                                    <TodoItem key={task.id} groupID={groupID} todo={task} index={index} />
+                            ))}
+                            {provided.placeholder}
+                            <div className="group-card-footer">
+                                {isAddModel && <AddTodo groupID={groupID} closeAddmodel={closeAddmodel} />}
+                            </div>
+                        </TodoList>
                 )}
             </Droppable>
-            <div className="group-card-footer">
-                {isAddModel ? <AddTodo groupID={groupID} closeAddmodel={closeAddmodel} />
-                            : <Button onClick={handleAddTodoBtn}>Add new task</Button>}
+            <div>
+                {!isAddModel && <Button onClick={handleAddTodoBtn}>Add new task</Button>}
             </div>
         </Container>
         // <div>

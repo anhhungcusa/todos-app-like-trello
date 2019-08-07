@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState, useRef} from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import { localStorageDataContext } from './../../contexts/LocalStorageDataProvider'
-import { withGroupCard } from './../../HOCs/withGroupCard/withGroupCard'
-import { TodoGroup } from './TodoGroup/TodoGroup'
-
 import './GroupList.css';
+import { localStorageDataContext } from './../../contexts/LocalStorageDataProvider'
+import { TodoGroup } from './TodoGroup/TodoGroup'
 import { AddTodoGroup } from '../AddTodoGroup/AddTodoGroup';
 
-const TodoGroupwithGroupCard = withGroupCard(TodoGroup, 'red') 
 
 export const GroupList = (props) => {
     const { data:{ todosGroup }, feature: { addTodoGroupForToday, moveTodo, moveTodoToAnotherList } } = useContext(localStorageDataContext); 
@@ -45,7 +42,6 @@ export const GroupList = (props) => {
         // debugger;
         // moving from one list to another
         moveTodoToAnotherList(source.droppableId, destination.droppableId, source.index, destination.index);
-
     }
 
     return (
@@ -54,7 +50,9 @@ export const GroupList = (props) => {
             <DragDropContext onDragEnd={onDragEnd}>
                 {todosGroupKey.map(key => {
                     return(
-                        <TodoGroup key={`.123${key}`} groupID={key}  {...todosGroup[key]} />
+                        <div key={key}>
+                            <TodoGroup  groupID={key}  {...todosGroup[key]} />
+                        </div>
                     )
                 })}
             </DragDropContext>
@@ -64,8 +62,6 @@ export const GroupList = (props) => {
                             addTodoGroupForOptionDate={addTodoGroupForOptionDate}
                             inputDateRef={inputDateRef} />
                     </div>
-                    {/* <button onClick={() => moveTodo('1564941600000', 0, 2)}>move</button>
-                    <button onClick={() => moveTodoToAnotherList('1564941600000','1565028000000', 0, 3)}>move to another list</button> */}
                 </div>
             </div>
         </main>
