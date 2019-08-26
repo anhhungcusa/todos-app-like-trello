@@ -1,6 +1,35 @@
 .todo-group {
     display: flex;
     flex-direction: column;
-     /* max-height: 490px; 
+    /* max-height: 490px; 
      overflow-y: scroll;  */
+}
+
+.group-card {
+    background-color: rgb(223, 225, 230);
+    min-width: 270px;
+    max-width: 270px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    margin-left: 8px;
+}
+.group-card-header {
+    position: relative;
+}
+.ab-top-r {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+}
+.group-card:first-child {
+    margin-left: 0;
+}
+
+.hiden {
+    visibility: hidden;
+}
+
+.group-card-header:hover .remove-btn{
+    visibility: visible !important;
+
 }

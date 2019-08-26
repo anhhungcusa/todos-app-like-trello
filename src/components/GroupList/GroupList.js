@@ -1,14 +1,18 @@
-import React, { useContext, useEffect, useState, useRef} from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 
 import './GroupList.css';
 import { localStorageDataContext } from './../../contexts/LocalStorageDataProvider'
-import { TodoGroup } from './TodoGroup/TodoGroup'
+import { TodoGroup } from './TodoGroup/TodoGroup';
 import { AddTodoGroup } from '../AddTodoGroup/AddTodoGroup';
+import { withCard } from './../../HOCs/withCard/withCard';
+import { createDefaultDay } from './../../utilities/index'
+// import { Form } from '../Form/Form';
 
+const TodoGroupwithCard = withCard(TodoGroup);
 
 export const GroupList = (props) => {
-    const { data:{ todosGroup }, feature: { addTodoGroupForToday, moveTodo, moveTodoToAnotherList } } = useContext(localStorageDataContext); 
+    const { data: { todosGroup }, feature: { addTodoGroupForToday, moveTodo, moveTodoToAnotherList } } = useContext(localStorageDataContext);
     const [todosGroupKey, settodosGroupKey] = useState([]);
     useEffect(() => {
         settodosGroupKey(Object.keys(todosGroup).sort());
@@ -16,8 +20,8 @@ export const GroupList = (props) => {
 
     const inputDateRef = useRef(null);
     const addTodoGroupForOptionDate = (e) => {
-        const { current: {value} } = inputDateRef
-        if(value !== '') {
+        const { current: { value } } = inputDateRef
+        if (value !== '') {
             const date = new Date(value);
             addTodoGroupForToday(e, {
                 d: date.getDate(),
@@ -26,16 +30,16 @@ export const GroupList = (props) => {
             })
         }
     };
-    const onDragEnd = ({destination, source, draggableId }) => {
-        if(!destination)
+    const onDragEnd = ({ destination, source }) => {
+        if (!destination)
             return;
-        if(
+        if (
             destination.droppableId === source.droppableId &&
             destination.index === source.index
         )
             return;
 
-        if(destination.droppableId === source.droppableId) {
+        if (destination.droppableId === source.droppableId) {
             moveTodo(source.droppableId, source.index, destination.index);
             return;
         }
@@ -47,15 +51,17 @@ export const GroupList = (props) => {
     return (
         <main>
             <div className="group-list">
-            <DragDropContext onDragEnd={onDragEnd}>
-                {todosGroupKey.map(key => {
-                    return(
-                        <div key={key}>
-                            <TodoGroup  groupID={key}  {...todosGroup[key]} />
-                        </div>
-                    )
-                })}
-            </DragDropContext>
+                <DragDropContext onDragEnd={onDragEnd}>
+                    {todosGroupKey.map(key => {
+                        return (
+                            <div key={key}>
+                                <TodoGroupwithCard
+                                    activeColor={(key === `${createDefaultDay()}` ? '#188038' : false)}
+                                    groupID={key}  {...todosGroup[key]} />
+                            </div>
+                        )
+                    })}
+                </DragDropContext>
                 <div>
                     <div className="group-card">
                         <AddTodoGroup addTodoGroupForToday={addTodoGroupForToday}
@@ -66,4 +72,7 @@ export const GroupList = (props) => {
             </div>
         </main>
     )
-} 
+}
+
+
+// import('./../Form/Form').then(({ Form }) => <Form />) 

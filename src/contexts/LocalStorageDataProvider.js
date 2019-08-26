@@ -11,14 +11,19 @@ export const LocalStorageDataProvider = ({ children }) => {
     const [data, setData] = useState(useContext(localStorageDataContext));
     // setup default localStorage
     useEffect(() => {
+        console.log('tacnhán')
         const dataLocalStorage = localStorage.getItem(localStorageKey);
         if (dataLocalStorage)
             setData(JSON.parse(dataLocalStorage));
         else
             localStorage.setItem(localStorageKey, JSON.stringify(data));
+            
+
     }, []);
     useEffect(() => {
+        
         localStorage.setItem(localStorageKey, JSON.stringify(data))
+        
     }, [data])
     const [inputTodo, setInputTodo] = useState('')
     //setup default sessionStorage

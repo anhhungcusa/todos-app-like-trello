@@ -11,11 +11,12 @@ import { } from './../../../../utilities'
 import { Button } from '../../../Button/Button';
 
 const Container = styled.div`
+    box-sizing: border-box;
     border: 1px solid lightgrey;
     position: relative;
     overflow-wrap: break-word; 
     border-radius: 2px;
-    padding: 8px;
+    padding: 4px;
     margin-bottom: 8px;
     transition: background-color 0.2s ease;
     background-color: ${props =>
@@ -49,25 +50,11 @@ export const TodoItem = ({ todo, groupID, index }) => {
         const { top, left } = todoItemRef.current.getBoundingClientRect();
         toggleEditMode(groupID, todo, { top, left })
     }
-    const handleOnDrag = () => {
-        todoItemRef.current.style.transform = 'rotate(20deg)';
-        todoItemRef.current.style.color = 'red';
-        console.log('handleOnDrag')
-    }
-    const handleOnDragStart = () => {
-        console.log('start')
-    }
-    
-    const handleOnDragEnd = () => {
-        todoItemRef.current.style.transform = 'rotate(0deg)';
-        console.log('handleOnDragend')
-    }
 
     return (
         <Draggable
             draggableId={id}
             index={index}
-            
         >
             {(provided, snapshot) => (
                 <div ref={todoItemRef}> 

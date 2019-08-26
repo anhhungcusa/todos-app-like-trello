@@ -12,7 +12,7 @@ export const AddTodo = ({groupID, closeAddmodel}) => {
             changeInputTodo(value);
         }, 200);
         return () => clearTimeout(changeInputTime)
-    }, [value])
+    }, [value, changeInputTodo])
     useEffect(() => setValue(inputTodo), [inputTodo])
 
     const textareaRef = useRef(null);

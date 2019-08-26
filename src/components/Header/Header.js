@@ -16,3 +16,7 @@ export const Header = () => {
         </header>
     )
 }
+
+Header.staticMethod = () => {
+    console.log(1);
+}

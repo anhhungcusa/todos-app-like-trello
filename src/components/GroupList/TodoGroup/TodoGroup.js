@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { localStorageDataContext } from './../../../contexts/LocalStorageDataProvider';
 import { AddTodo } from './../../AddTodo/AddTodo';
 import { Button } from './../../Button/Button';
-import { withCard } from './../../../HOCs/withCard/withCard';
 import { getDDM } from './../../../utilities';
 import { TodoItem } from './TodoItem/TodoItem';
 import './TodoGroup.css';
@@ -57,7 +56,10 @@ export const TodoGroup = ({ groupID, isValid, todos = [] }) => {
 
     return (
         <Container>
-            <Title>{getDDM(groupID)}</Title>
+            <div className="group-card-header">
+                <Title>{getDDM(groupID)}</Title>
+                <Button className="btn ab-top-r hiden remove-btn" onClick={() => removeTodoGroup(groupID)}>D</Button>
+            </div>
             <Droppable style={{background: 'red'}}  droppableId={groupID} type="TASK" >
                 {(provided, snapshot) => (
                         <TodoList
@@ -79,37 +81,5 @@ export const TodoGroup = ({ groupID, isValid, todos = [] }) => {
                 {!isAddModel && <Button onClick={handleAddTodoBtn}>Add new task</Button>}
             </div>
         </Container>
-        // <div>
-        //     <div className="group-card-header">
-        //     {getDDM(groupID)}
-        //         <Button className="ab-top-r" onClick={() => removeTodoGroup(groupID)}>D</Button>
-        //     </div>
-        //     <div className="group-card-body">
-        //         <div className="todo-group">
-        //             <Droppable droppableId={groupID} type="TASK" >
-        //                 {(provided, snapshot) => (
-        //                     <TaskList
-        //                         ref={provided.innerRef}
-        //                         {...provided.droppableProps}
-        //                         isDraggingOver={snapshot.isDraggingOver}
-        //                     >
-        //                         {todos.map((task, index) => (
-        //                             <div key={task.id} className=" d-flex-jty-center">
-        //                                 <TodowithCard groupID={groupID} todo={task} index={index} />
-        //                             </div>
-        //                         ))}
-        //                         {provided.placeholder}
-        //                     </TaskList>
-        //                 )}
-        //             </Droppable>
-
-        //         </div>
-        //     </div>  
-            // <div className="group-card-footer">
-            //     {isAddModel ? <AddTodo groupID={groupID} closeAddmodel={closeAddmodel} />
-            //                 : <Button onClick={handleAddTodoBtn}>Add new task</Button>}
-            // </div>
-        // </div>
-
     )
 }
