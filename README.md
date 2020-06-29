@@ -8,7 +8,6 @@
 
 - React
 - React Hook
-- Redux
 - react-beautiful-dnd
 
 ## Installation
@@ -27,4 +26,4 @@ npm start
 
 ## Demo
 
-[link](https://instagram-clone-d083b.web.app)
+[link](https://react-apps-5f199.web.app)
