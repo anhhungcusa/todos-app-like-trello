@@ -33,6 +33,7 @@ export const EditModal = ({ editModalValue, editTodo, toggleEditMode}) => {
         return () => {
             document.removeEventListener('keyup', handleDocumentKeyUp)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return editModalValue && (

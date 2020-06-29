@@ -11,7 +11,6 @@ export const LocalStorageDataProvider = ({ children }) => {
     const [data, setData] = useState(useContext(localStorageDataContext));
     // setup default localStorage
     useEffect(() => {
-        console.log('tacnhán')
         const dataLocalStorage = localStorage.getItem(localStorageKey);
         if (dataLocalStorage)
             setData(JSON.parse(dataLocalStorage));
@@ -19,6 +18,7 @@ export const LocalStorageDataProvider = ({ children }) => {
             localStorage.setItem(localStorageKey, JSON.stringify(data));
             
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
         
@@ -33,6 +33,7 @@ export const LocalStorageDataProvider = ({ children }) => {
             setInputTodo(dataSessionStorage);
         else
             sessionStorage.setItem(sesionStorageKey, inputTodo);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     useEffect(() => {
         sessionStorage.setItem(sesionStorageKey, inputTodo)

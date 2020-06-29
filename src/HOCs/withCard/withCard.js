@@ -5,7 +5,7 @@ import './withCard.css'
 export const withCard = (WrappedComponent, bgColor) => {
     return props => {
         return (
-            <div className="card" style={{ backgroundColor: props.activeColor || bgColor || '#f9f9f9'}}>
+            <div className="card" style={{ backgroundColor: props.activeColor || bgColor || '#ebecf0'}}>
                 <WrappedComponent {...props} />
             </div>
         )

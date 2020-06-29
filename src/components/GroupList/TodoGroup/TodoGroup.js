@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
 
@@ -10,8 +10,6 @@ import { TodoItem } from './TodoItem/TodoItem';
 import './TodoGroup.css';
 const Container = styled.div`
     margin: 8px;
-    border: 1px solid lightgrey;
-    border-radius: 2px;
     width: 240px;
     display: flex;   
     flex-direction: column;
@@ -37,7 +35,7 @@ export const TodoGroup = ({ groupID, isValid, todos = [] }) => {
     useEffect(() => {
         if (addModelGroupID !== groupID)
         setIsAddModel(false);
-    }, [addModelGroupID]);
+    }, [addModelGroupID, groupID]);
     const closeAddmodel = () => {
         setIsAddModel(false);
         checkAddModelGroupID(null);
